@@ -1,4 +1,6 @@
-process.loadEnvFile?.();
+const { loadEnvIfExists } = require('../server/utils/loadEnv');
+
+loadEnvIfExists();
 
 const bcrypt = require('bcrypt');
 const { PrismaClient, MatchStage, MatchStatus } = require('@prisma/client');

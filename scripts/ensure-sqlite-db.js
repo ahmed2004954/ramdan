@@ -1,4 +1,6 @@
-process.loadEnvFile?.();
+const { loadEnvIfExists } = require('../server/utils/loadEnv');
+
+loadEnvIfExists();
 
 const fs = require('fs');
 const path = require('path');
