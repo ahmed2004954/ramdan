@@ -27,11 +27,24 @@ async function login(req, res, next) {
       return res.redirect('/admin/login');
     }
 
-    const isValid = await bcrypt.compare(password, admin.passwordHash);
+    const passwordHash = admin.passwordHash || '';
+    const isBcryptHash = /^\$2[aby]\$\d+\$/.test(passwordHash);
+    const isValid = isBcryptHash ? await bcrypt.compare(password, passwordHash) : password === passwordHash;
 
     if (!isValid) {
       req.flash('error', 'بيانات الدخول غير صحيحة.');
       return res.redirect('/admin/login');
+    }
+
+    if (!isBcryptHash) {
+      await prisma.adminUser.update({
+        where: {
+          id: admin.id,
+        },
+        data: {
+          passwordHash: await bcrypt.hash(password, 10),
+        },
+      });
     }
 
     req.session.adminUser = {

@@ -42,6 +42,33 @@ test('تسجيل الدخول يسمح بالوصول إلى لوحة الإدا
   assert.match(dashboardResponse.text, /لوحة التحكم/);
 });
 
+test('تسجيل الدخول يقبل كلمة مرور نصية قديمة ثم يحولها إلى hash', async () => {
+  await prisma.adminUser.create({
+    data: {
+      username: 'legacy-admin',
+      passwordHash: 'legacy123',
+    },
+  });
+
+  const agent = request.agent(app);
+  const loginResponse = await agent.post('/admin/login').type('form').send({
+    username: 'legacy-admin',
+    password: 'legacy123',
+  });
+
+  assert.equal(loginResponse.statusCode, 302);
+  assert.equal(loginResponse.headers.location, '/admin');
+
+  const updatedAdmin = await prisma.adminUser.findUnique({
+    where: {
+      username: 'legacy-admin',
+    },
+  });
+
+  assert.notEqual(updatedAdmin.passwordHash, 'legacy123');
+  assert.match(updatedAdmin.passwordHash, /^\$2[aby]\$/);
+});
+
 test('صفحة الفريق داخل الإدارة تعرض لاعبي الفريق', async () => {
   const agent = request.agent(app);
 
