@@ -1,0 +1,153 @@
+<section class="space-y-6" x-data="{ stage: '<%= match?.stage || 'GROUP' %>' }">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">إدارة الجدول</p>
+      <h1 class="section-title"><%= match ? 'تعديل مباراة' : 'إضافة مباراة' %></h1>
+    </div>
+    <a href="/admin/matches" class="secondary-button">العودة إلى المباريات</a>
+  </div>
+
+  <form action="<%= formAction %>" method="POST" class="glass-card grid gap-5 p-6 lg:grid-cols-2">
+    <label class="form-group">
+      <span>الفريق الأول</span>
+      <select name="teamAId" class="form-input" required>
+        <option value="">اختر الفريق</option>
+        <% teams.forEach((team) => { %>
+          <option value="<%= team.id %>" <%= team.id === match?.teamAId ? 'selected' : '' %>><%= team.name %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="form-group">
+      <span>الفريق الثاني</span>
+      <select name="teamBId" class="form-input" required>
+        <option value="">اختر الفريق</option>
+        <% teams.forEach((team) => { %>
+          <option value="<%= team.id %>" <%= team.id === match?.teamBId ? 'selected' : '' %>><%= team.name %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="form-group">
+      <span>المرحلة</span>
+      <select name="stage" class="form-input" x-model="stage" required>
+        <% stageOptions.forEach((stage) => { %>
+          <option value="<%= stage %>" <%= stage === match?.stage ? 'selected' : '' %>><%= stageLabels[stage] %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="form-group" x-show="stage === 'GROUP'" style="<%= match && match.stage !== 'GROUP' ? 'display:none;' : '' %>">
+      <span>المجموعة</span>
+      <select name="groupName" class="form-input">
+        <option value="">اختر المجموعة</option>
+        <% groupNames.forEach((groupName) => { %>
+          <option value="<%= groupName %>" <%= groupName === match?.groupName ? 'selected' : '' %>><%= groupName %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="form-group">
+      <span>تاريخ ووقت المباراة</span>
+      <input
+        type="datetime-local"
+        name="dateTime"
+        class="form-input"
+        value="<%= match ? new Date(match.dateTime.getTime() - match.dateTime.getTimezoneOffset() * 60000).toISOString().slice(0,16) : '' %>"
+        required
+      />
+    </label>
+
+    <label class="form-group">
+      <span>الحالة</span>
+      <select name="status" class="form-input" required>
+        <% [['UPCOMING', 'قادمة'], ['LIVE', 'مباشرة'], ['FINISHED', 'انتهت']].forEach(([statusValue, statusLabel]) => { %>
+          <option value="<%= statusValue %>" <%= statusValue === match?.status ? 'selected' : '' %>><%= statusLabel %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="form-group">
+      <span>أهداف الفريق الأول</span>
+      <input type="number" min="0" name="scoreA" class="form-input" value="<%= match?.scoreA ?? '' %>" />
+    </label>
+
+    <label class="form-group">
+      <span>أهداف الفريق الثاني</span>
+      <input type="number" min="0" name="scoreB" class="form-input" value="<%= match?.scoreB ?? '' %>" />
+    </label>
+
+    <label class="form-group">
+      <span>ترتيب العرض</span>
+      <input type="number" min="0" name="roundOrder" class="form-input" value="<%= match?.roundOrder ?? 0 %>" />
+    </label>
+
+    <div class="lg:col-span-2">
+      <button type="submit" class="primary-button"><%= match ? 'حفظ المباراة' : 'إضافة المباراة' %></button>
+    </div>
+  </form>
+
+  <% if (match && goalsAction) { %>
+    <form action="<%= goalsAction %>" method="POST" class="glass-card p-6">
+      <div class="section-heading mb-6">
+        <div>
+          <p class="section-kicker">الهدافون</p>
+          <h2 class="text-2xl font-black">أهداف المباراة</h2>
+          <p class="mt-2 text-sm text-slate-500">
+            <% if (match.scoreA !== null && match.scoreB !== null) { %>
+              يجب أن يطابق مجموع أهداف اللاعبين نتيجة المباراة الحالية: <strong><%= match.scoreA %> : <%= match.scoreB %></strong>
+            <% } else { %>
+              يمكنك إدخال أهداف اللاعبين بعد تحديد نتيجة المباراة أو أثناء التحديث التدريجي.
+            <% } %>
+          </p>
+        </div>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div class="space-y-4">
+          <div class="rounded-[1.75rem] bg-emerald-50 px-5 py-4">
+            <p class="text-sm font-bold text-slate-500">الفريق الأول</p>
+            <h3 class="mt-1 text-2xl font-black text-[var(--color-accent)]"><%= match.teamA.name %></h3>
+          </div>
+
+          <% teamAGoalPlayers.forEach((player) => { %>
+            <div class="rounded-3xl border border-slate-200/70 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="font-bold"><%= player.name %></p>
+                  <p class="text-sm text-slate-500"><%= player.teamName %></p>
+                </div>
+                <input type="hidden" name="playerId" value="<%= player.id %>" />
+                <input type="hidden" name="teamId" value="<%= player.teamId %>" />
+                <input type="number" min="0" name="count" value="<%= goalMap.get(player.id) || 0 %>" class="w-24 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center font-bold text-slate-900 outline-none ring-0 transition focus:border-emerald-400" />
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <div class="space-y-4">
+          <div class="rounded-[1.75rem] bg-slate-100 px-5 py-4">
+            <p class="text-sm font-bold text-slate-500">الفريق الثاني</p>
+            <h3 class="mt-1 text-2xl font-black text-slate-900"><%= match.teamB.name %></h3>
+          </div>
+
+          <% teamBGoalPlayers.forEach((player) => { %>
+            <div class="rounded-3xl border border-slate-200/70 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="font-bold"><%= player.name %></p>
+                  <p class="text-sm text-slate-500"><%= player.teamName %></p>
+                </div>
+                <input type="hidden" name="playerId" value="<%= player.id %>" />
+                <input type="hidden" name="teamId" value="<%= player.teamId %>" />
+                <input type="number" min="0" name="count" value="<%= goalMap.get(player.id) || 0 %>" class="w-24 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center font-bold text-slate-900 outline-none ring-0 transition focus:border-emerald-400" />
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <button type="submit" class="primary-button mt-6">حفظ الهدافين</button>
+    </form>
+  <% } %>
+</section>

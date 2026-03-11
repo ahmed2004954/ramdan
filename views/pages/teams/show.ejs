@@ -1,0 +1,52 @@
+<section class="page-section">
+  <div class="team-hero">
+    <div class="flex items-center gap-4">
+      <img src="<%= team.logoPath %>" alt="<%= team.name %>" class="h-24 w-24 rounded-[2rem] object-cover shadow-xl shadow-emerald-900/20" />
+      <div>
+        <p class="section-kicker">ملف الفريق</p>
+        <h1 class="section-title"><%= team.name %></h1>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="team-stat"><span>لعب</span><strong><%= standing.played %></strong></div>
+      <div class="team-stat"><span>فاز</span><strong><%= standing.wins %></strong></div>
+      <div class="team-stat"><span>تعادل</span><strong><%= standing.draws %></strong></div>
+      <div class="team-stat"><span>خسر</span><strong><%= standing.losses %></strong></div>
+      <div class="team-stat"><span>النقاط</span><strong><%= standing.points %></strong></div>
+    </div>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+    <div class="glass-card p-5">
+      <div class="section-heading mb-4">
+        <div>
+          <p class="section-kicker">قائمة الفريق</p>
+          <h2 class="text-2xl font-black">اللاعبون</h2>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <% team.players.forEach((player, index) => { %>
+          <div class="flex items-center justify-between rounded-2xl border border-slate-200/70 px-4 py-3">
+            <span class="font-bold"><%= player.name %></span>
+            <span class="text-xs text-slate-500">#<%= index + 1 %></span>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="glass-card p-5">
+      <div class="section-heading mb-4">
+        <div>
+          <p class="section-kicker">آخر المواجهات</p>
+          <h2 class="text-2xl font-black">النتائج الأخيرة</h2>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <% matches.forEach((match) => { %>
+          <%- include('../../partials/match-card', { match, showStage: true }) %>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>

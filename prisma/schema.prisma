@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MatchStatus {
+  UPCOMING
+  LIVE
+  FINISHED
+}
+
+enum MatchStage {
+  GROUP
+  R16
+  QF
+  SF
+  FINAL
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Team {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  logoPath   String
+  players    Player[]
+  standings  Standing[]
+  homeMatches Match[]   @relation("MatchTeamA")
+  awayMatches Match[]   @relation("MatchTeamB")
+  goals      Goal[]
+  createdAt  DateTime   @default(now())
+}
+
+model Player {
+  id        Int      @id @default(autoincrement())
+  name      String
+  teamId    Int
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  goals     Goal[]
+  createdAt DateTime @default(now())
+
+  @@unique([name, teamId])
+}
+
+model Match {
+  id         Int         @id @default(autoincrement())
+  teamAId    Int
+  teamBId    Int
+  teamA      Team        @relation("MatchTeamA", fields: [teamAId], references: [id], onDelete: Cascade)
+  teamB      Team        @relation("MatchTeamB", fields: [teamBId], references: [id], onDelete: Cascade)
+  scoreA     Int?
+  scoreB     Int?
+  dateTime   DateTime
+  groupName  String?
+  stage      MatchStage
+  status     MatchStatus @default(UPCOMING)
+  roundOrder Int         @default(0)
+  goals      Goal[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([dateTime])
+  @@index([stage, roundOrder])
+}
+
+model Standing {
+  id           Int      @id @default(autoincrement())
+  groupName    String
+  teamId       Int
+  team         Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  played       Int      @default(0)
+  wins         Int      @default(0)
+  draws        Int      @default(0)
+  losses       Int      @default(0)
+  points       Int      @default(0)
+  goalsFor     Int      @default(0)
+  goalsAgainst Int      @default(0)
+  updatedAt    DateTime @updatedAt
+
+  @@unique([groupName, teamId])
+  @@index([groupName, points])
+}
+
+model Goal {
+  id        Int      @id @default(autoincrement())
+  matchId   Int
+  playerId  Int
+  teamId    Int
+  count     Int      @default(1)
+  match     Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  player    Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  team      Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([matchId, playerId])
+  @@index([playerId, count])
+}

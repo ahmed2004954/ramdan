@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <rect width="160" height="160" rx="36" fill="#F0FAF3" />
+  <circle cx="80" cy="80" r="52" fill="#0F5132" />
+  <path d="M80 34 94 63 126 67 103 88 109 120 80 104 51 120 57 88 34 67 66 63Z" fill="#39A86C" />
+  <text x="80" y="86" text-anchor="middle" font-size="24" font-family="Tahoma" fill="#fff">ع</text>
+</svg>

@@ -1,0 +1,49 @@
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">ترتيب الفرق</p>
+      <h1 class="section-title">المجموعات</h1>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <% groups.forEach((group) => { %>
+      <div class="glass-card overflow-hidden">
+        <div class="border-b border-slate-200/60 px-5 py-4">
+          <h2 class="text-xl font-black text-slate-900"><%= group.groupName %></h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="league-table">
+            <thead>
+              <tr>
+                <th>الفريق</th>
+                <th>لعب</th>
+                <th>فاز</th>
+                <th>تعادل</th>
+                <th>خسر</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% group.rows.forEach((row, index) => { %>
+                <tr class="<%= index === 0 ? 'leader-row' : '' %>">
+                  <td>
+                    <a href="/teams/<%= row.team.id %>" class="table-team">
+                      <img src="<%= row.team.logoPath %>" alt="<%= row.team.name %>" class="h-10 w-10 rounded-2xl object-cover" />
+                      <span><%= row.team.name %></span>
+                    </a>
+                  </td>
+                  <td><%= row.played %></td>
+                  <td><%= row.wins %></td>
+                  <td><%= row.draws %></td>
+                  <td><%= row.losses %></td>
+                  <td class="font-black text-[var(--color-accent)]"><%= row.points %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>

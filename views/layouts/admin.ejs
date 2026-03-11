@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | لوحة الإدارة</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="font-sans text-slate-900">
+    <div class="min-h-screen bg-[var(--color-surface)]">
+      <div class="mx-auto grid min-h-screen max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:px-8">
+        <aside class="glass-card h-fit p-5 lg:sticky lg:top-6">
+          <div class="mb-8 flex items-center gap-3">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-xl font-black text-white">د</span>
+            <div>
+              <p class="text-sm text-slate-500">إدارة البطولة</p>
+              <p class="font-black">دوري رمضان</p>
+            </div>
+          </div>
+
+          <nav class="space-y-2">
+            <% adminNavigationItems.forEach((item) => { %>
+              <a
+                href="<%= item.href %>"
+                class="<%= isActivePath(currentPath, item.href) ? 'admin-nav-link-active' : 'admin-nav-link' %>"
+              >
+                <%= item.label %>
+              </a>
+            <% }) %>
+          </nav>
+
+          <div class="mt-8 rounded-3xl bg-emerald-950 px-4 py-4 text-white">
+            <p class="text-sm text-white/70">المستخدم الحالي</p>
+            <p class="mt-1 font-bold"><%= adminUser?.username || 'مدير' %></p>
+            <form action="/admin/logout" method="POST" class="mt-4">
+              <button type="submit" class="w-full rounded-2xl border border-white/15 px-4 py-3 text-sm font-bold transition hover:bg-white/10">
+                تسجيل الخروج
+              </button>
+            </form>
+          </div>
+        </aside>
+
+        <div class="space-y-6">
+          <%- include('../partials/flash') %>
+          <%- body %>
+        </div>
+      </div>
+    </div>
+
+    <script defer src="/js/alpine.min.js"></script>
+    <script defer src="/js/app.js"></script>
+  </body>
+</html>

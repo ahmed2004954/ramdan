@@ -1,0 +1,26 @@
+<section class="space-y-6">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">نظرة عامة</p>
+      <h1 class="section-title">لوحة التحكم</h1>
+    </div>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <% stats.forEach((stat) => { %>
+      <div class="stat-card">
+        <p class="text-sm text-slate-500"><%= stat.label %></p>
+        <p class="mt-4 text-4xl font-black text-[var(--color-accent)]"><%= stat.value %></p>
+      </div>
+    <% }) %>
+  </div>
+
+  <div class="glass-card p-6">
+    <h2 class="text-2xl font-black">إدارة سريعة</h2>
+    <div class="mt-5 grid gap-4 md:grid-cols-3">
+      <a href="/admin/teams/new" class="admin-quick-link">إضافة فريق</a>
+      <a href="/admin/players" class="admin-quick-link">إدارة اللاعبين</a>
+      <a href="/admin/matches/new" class="admin-quick-link">إضافة مباراة</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">المسار إلى اللقب</p>
+      <h1 class="section-title">الأدوار الإقصائية</h1>
+    </div>
+  </div>
+
+  <div class="knockout-grid">
+    <% stages.forEach((stage) => { %>
+      <div class="glass-card p-5">
+        <div class="mb-5 flex items-center justify-between gap-3">
+          <h2 class="text-xl font-black text-slate-900"><%= stage.label %></h2>
+          <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-900"><%= stage.matches.length %> مباراة</span>
+        </div>
+
+        <% if (stage.matches.length) { %>
+          <div class="space-y-4">
+            <% stage.matches.forEach((match) => { %>
+              <div class="knockout-node">
+                <div class="knockout-team">
+                  <img src="<%= match.teamA.logoPath %>" alt="<%= match.teamA.name %>" class="h-9 w-9 rounded-xl object-cover" />
+                  <span class="font-bold"><%= match.teamA.name %></span>
+                  <strong class="text-lg text-[var(--color-accent)]"><%= match.scoreA ?? '-' %></strong>
+                </div>
+                <div class="knockout-team">
+                  <img src="<%= match.teamB.logoPath %>" alt="<%= match.teamB.name %>" class="h-9 w-9 rounded-xl object-cover" />
+                  <span class="font-bold"><%= match.teamB.name %></span>
+                  <strong class="text-lg text-[var(--color-accent)]"><%= match.scoreB ?? '-' %></strong>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-xs text-slate-500">
+                  <span><%= formatDateArabic(match.dateTime) %></span>
+                  <span class="status-badge <%= matchStatusClasses[match.status] %>"><%= matchStatusLabels[match.status] %></span>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-node">لا توجد مباريات مضافة لهذه المرحلة بعد.</div>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</section>

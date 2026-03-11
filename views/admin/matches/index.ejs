@@ -1,0 +1,45 @@
+<section class="space-y-6">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">إدارة الجدول</p>
+      <h1 class="section-title">المباريات</h1>
+    </div>
+    <a href="/admin/matches/new" class="primary-button">إضافة مباراة</a>
+  </div>
+
+  <div class="glass-card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="league-table">
+        <thead>
+          <tr>
+            <th>المواجهة</th>
+            <th>المرحلة</th>
+            <th>التاريخ</th>
+            <th>الحالة</th>
+            <th>النتيجة</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% matches.forEach((match) => { %>
+            <tr>
+              <td class="font-bold"><%= match.teamA.name %> × <%= match.teamB.name %></td>
+              <td><%= stageLabels[match.stage] %></td>
+              <td><%= formatDateTimeArabic(match.dateTime) %></td>
+              <td><span class="status-badge <%= matchStatusClasses[match.status] %>"><%= matchStatusLabels[match.status] %></span></td>
+              <td><%= match.scoreA ?? '-' %> : <%= match.scoreB ?? '-' %></td>
+              <td>
+                <div class="flex gap-2">
+                  <a href="/admin/matches/<%= match.id %>/edit" class="secondary-button justify-center px-4 py-2">تعديل</a>
+                  <form action="/admin/matches/<%= match.id %>/delete" method="POST">
+                    <button type="submit" class="danger-button px-4 py-2" onclick="return confirm('هل تريد حذف هذه المباراة؟')">حذف</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

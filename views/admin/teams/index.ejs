@@ -1,0 +1,30 @@
+<section class="space-y-6">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">إدارة البيانات</p>
+      <h1 class="section-title">الفرق</h1>
+    </div>
+    <a href="/admin/teams/new" class="primary-button">إضافة فريق</a>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <% teams.forEach((team) => { %>
+      <div class="glass-card p-5">
+        <div class="flex items-center gap-4">
+          <img src="<%= team.logoPath %>" alt="<%= team.name %>" class="h-16 w-16 rounded-[1.5rem] object-cover" />
+          <div>
+            <h2 class="text-xl font-black"><%= team.name %></h2>
+            <p class="text-sm text-slate-500"><%= team._count.players %> لاعب</p>
+          </div>
+        </div>
+        <div class="mt-5 flex gap-3">
+          <a href="/admin/teams/<%= team.id %>/players" class="primary-button flex-1 justify-center">اللاعبون</a>
+          <a href="/admin/teams/<%= team.id %>/edit" class="secondary-button flex-1 justify-center">تعديل</a>
+          <form action="/admin/teams/<%= team.id %>/delete" method="POST" class="flex-1">
+            <button type="submit" class="danger-button w-full justify-center" onclick="return confirm('هل تريد حذف هذا الفريق؟')">حذف</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>

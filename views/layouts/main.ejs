@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | دوري رمضان لكرة القدم</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="font-sans text-slate-900">
+    <% if (!hidePublicNavigation) { %>
+      <header class="sticky top-0 z-50 border-b border-white/40 bg-white/75 backdrop-blur-xl">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 lg:px-8" x-data="{ open: false }">
+          <a href="/" class="flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--color-primary)] text-lg font-black text-white shadow-lg shadow-emerald-900/20">د</span>
+            <div>
+              <p class="text-sm text-slate-500">المنصة الرسمية</p>
+              <p class="text-base font-black text-slate-900">دوري رمضان لكرة القدم</p>
+            </div>
+          </a>
+          <button class="nav-toggle lg:hidden" type="button" @click="open = !open">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <nav class="hidden items-center gap-2 lg:flex">
+            <% navigationItems.forEach((item) => { %>
+              <a
+                href="<%= item.href %>"
+                class="<%= isActivePath(currentPath, item.href) ? 'nav-link-active' : 'nav-link' %>"
+              >
+                <%= item.label %>
+              </a>
+            <% }) %>
+            <a href="/admin" class="admin-entry-link">الإدارة</a>
+          </nav>
+          <div
+            class="mobile-nav-panel lg:hidden"
+            x-show="open"
+            x-transition
+            @click.outside="open = false"
+            style="display: none;"
+          >
+            <% navigationItems.forEach((item) => { %>
+              <a
+                href="<%= item.href %>"
+                class="<%= isActivePath(currentPath, item.href) ? 'nav-link-active' : 'nav-link' %>"
+              >
+                <%= item.label %>
+              </a>
+            <% }) %>
+            <a href="/admin" class="admin-entry-link justify-center">الإدارة</a>
+          </div>
+        </div>
+      </header>
+    <% } %>
+
+    <main class="mx-auto min-h-[calc(100vh-5rem)] max-w-7xl px-4 py-6 lg:px-8 lg:py-10">
+      <%- include('../partials/flash') %>
+      <%- body %>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-4 pb-8 pt-4 text-center text-sm text-slate-500 lg:px-8">
+      جميع الحقوق محفوظة لدوري رمضان لكرة القدم
+    </footer>
+
+    <script defer src="/js/alpine.min.js"></script>
+    <script defer src="/js/app.js"></script>
+  </body>
+</html>

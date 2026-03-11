@@ -1,0 +1,62 @@
+<section class="space-y-6">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">إدارة البيانات</p>
+      <h1 class="section-title">اللاعبون</h1>
+    </div>
+  </div>
+
+  <div class="glass-card p-6">
+    <h2 class="text-xl font-black">إضافة لاعب</h2>
+    <form action="/admin/players" method="POST" class="mt-5 grid gap-4 md:grid-cols-3">
+      <label class="form-group">
+        <span>اسم اللاعب</span>
+        <input type="text" name="name" class="form-input" required />
+      </label>
+      <label class="form-group">
+        <span>الفريق</span>
+        <select name="teamId" class="form-input" required>
+          <% teams.forEach((team) => { %>
+            <option value="<%= team.id %>"><%= team.name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <div class="flex items-end">
+        <button type="submit" class="primary-button w-full justify-center">إضافة اللاعب</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="grid gap-4 xl:grid-cols-2">
+    <% players.forEach((player) => { %>
+      <form action="/admin/players/<%= player.id %>" method="POST" class="glass-card space-y-4 p-5">
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="form-group">
+            <span>اسم اللاعب</span>
+            <input type="text" name="name" class="form-input" value="<%= player.name %>" required />
+          </label>
+          <label class="form-group">
+            <span>الفريق</span>
+            <select name="teamId" class="form-input" required>
+              <% teams.forEach((team) => { %>
+                <option value="<%= team.id %>" <%= team.id === player.teamId ? 'selected' : '' %>><%= team.name %></option>
+              <% }) %>
+            </select>
+          </label>
+        </div>
+
+        <div class="flex flex-col gap-3 border-t border-slate-200/70 pt-4 sm:flex-row sm:justify-end">
+          <button type="submit" class="secondary-button w-full justify-center sm:w-auto sm:min-w-28">حفظ</button>
+          <button
+            type="submit"
+            formaction="/admin/players/<%= player.id %>/delete"
+            class="danger-button w-full justify-center sm:w-auto sm:min-w-28"
+            onclick="return confirm('هل تريد حذف هذا اللاعب؟')"
+          >
+            حذف
+          </button>
+        </div>
+      </form>
+    <% }) %>
+  </div>
+</section>

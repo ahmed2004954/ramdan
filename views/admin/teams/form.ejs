@@ -1,0 +1,32 @@
+<section class="space-y-6">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">إدارة البيانات</p>
+      <h1 class="section-title"><%= team ? 'تعديل فريق' : 'إضافة فريق' %></h1>
+    </div>
+    <a href="/admin/teams" class="secondary-button">العودة إلى الفرق</a>
+  </div>
+
+  <form action="<%= formAction %>" method="POST" class="glass-card grid gap-6 p-6 lg:grid-cols-2">
+    <label class="form-group">
+      <span>اسم الفريق</span>
+      <input type="text" name="name" class="form-input" value="<%= team?.name || '' %>" placeholder="اكتب اسم الفريق" required />
+    </label>
+
+    <label class="form-group">
+      <span>رابط شعار الفريق</span>
+      <input type="url" name="logoPath" class="form-input" value="<%= team?.logoPath || '' %>" placeholder="https://example.com/logo.png أو اتركه فارغًا" />
+    </label>
+
+    <% if (team) { %>
+      <div class="lg:col-span-2">
+        <p class="mb-3 text-sm font-bold text-slate-500">الشعار الحالي</p>
+        <img src="<%= team.logoPath %>" alt="<%= team.name %>" class="h-24 w-24 rounded-[1.5rem] object-cover" />
+      </div>
+    <% } %>
+
+    <div class="lg:col-span-2">
+      <button type="submit" class="primary-button"><%= team ? 'حفظ التعديلات' : 'إضافة الفريق' %></button>
+    </div>
+  </form>
+</section>

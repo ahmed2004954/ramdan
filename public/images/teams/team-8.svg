@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <rect width="160" height="160" rx="36" fill="#F5FCF7" />
+  <path d="M80 26c27 0 50 22 50 50s-23 58-50 58S30 104 30 76s23-50 50-50Z" fill="#39A86C" />
+  <path d="M80 42c18 0 34 15 34 34S98 118 80 118 46 95 46 76s16-34 34-34Z" fill="#0F5132" />
+  <text x="80" y="86" text-anchor="middle" font-size="24" font-family="Tahoma" fill="#fff">ز</text>
+</svg>

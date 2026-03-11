@@ -1,0 +1,28 @@
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">كل المباريات</p>
+      <h1 class="section-title">المباريات</h1>
+    </div>
+    <div class="filter-pills">
+      <% matchFilters.forEach((filter) => { %>
+        <a href="/matches?filter=<%= filter.value %>" class="<%= selectedFilter === filter.value ? 'filter-pill-active' : 'filter-pill' %>">
+          <%= filter.label %>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+
+  <% if (matches.length) { %>
+    <div class="cards-grid">
+      <% matches.forEach((match) => { %>
+        <%- include('../partials/match-card', { match, showStage: true }) %>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <h2 class="text-2xl font-black">لا توجد مباريات ضمن هذا الفلتر</h2>
+      <p class="mt-3 text-sm text-slate-500">جرّب فلترًا آخر أو عد لاحقًا بعد تحديث الجدول.</p>
+    </div>
+  <% } %>
+</section>

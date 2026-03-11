@@ -1,0 +1,33 @@
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">قائمة الهدافين</p>
+      <h1 class="section-title">الهدافون</h1>
+    </div>
+  </div>
+
+  <div class="glass-card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="league-table">
+        <thead>
+          <tr>
+            <th>الترتيب</th>
+            <th>اللاعب</th>
+            <th>الفريق</th>
+            <th>عدد الأهداف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% scorers.forEach((scorer, index) => { %>
+            <tr class="<%= index === 0 ? 'leader-row' : '' %>">
+              <td><%= scorer.rank %></td>
+              <td class="font-bold"><%= scorer.playerName %></td>
+              <td><%= scorer.teamName %></td>
+              <td class="font-black text-[var(--color-accent)]"><%= scorer.goals %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

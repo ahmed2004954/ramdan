@@ -1,0 +1,39 @@
+<article class="match-card">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <% if (showStage && match.stage !== 'GROUP') { %>
+        <p class="text-xs font-bold text-slate-500"><%= stageLabels[match.stage] %></p>
+      <% } else if (match.groupName) { %>
+        <p class="text-xs font-bold text-slate-500"><%= match.groupName %></p>
+      <% } %>
+      <h3 class="mt-2 text-lg font-black text-slate-900">مواجهة قوية</h3>
+    </div>
+    <span class="status-badge <%= matchStatusClasses[match.status] %>"><%= matchStatusLabels[match.status] %></span>
+  </div>
+
+  <div class="mt-6 grid gap-4">
+    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+      <div class="team-display">
+        <img src="<%= match.teamA.logoPath %>" alt="<%= match.teamA.name %>" class="team-logo" />
+        <a href="/teams/<%= match.teamA.id %>" class="team-name-link"><%= match.teamA.name %></a>
+      </div>
+      <div class="score-shell">
+        <% if (match.scoreA !== null && match.scoreB !== null) { %>
+          <span class="score-number"><%= match.scoreA %></span>
+          <span class="score-divider">:</span>
+          <span class="score-number"><%= match.scoreB %></span>
+        <% } else { %>
+          <span class="score-pending">VS</span>
+        <% } %>
+      </div>
+      <div class="team-display team-display-left">
+        <img src="<%= match.teamB.logoPath %>" alt="<%= match.teamB.name %>" class="team-logo" />
+        <a href="/teams/<%= match.teamB.id %>" class="team-name-link"><%= match.teamB.name %></a>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200/70 pt-4 text-sm text-slate-500">
+      <span><%= formatDateArabic(match.dateTime) %></span>
+      <span><%= formatTimeArabic(match.dateTime) %></span>
+    </div>
+  </div>
+</article>

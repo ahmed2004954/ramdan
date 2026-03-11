@@ -1,0 +1,52 @@
+<section class="hero-panel">
+  <div class="max-w-3xl">
+    <p class="hero-kicker">منصة متابعة وإدارة البطولة</p>
+    <h1 class="hero-title">دوري رمضان لكرة القدم</h1>
+    <p class="hero-description">
+      تجربة عربية رياضية حديثة لمتابعة المباريات والنتائج والمجموعات والأدوار الإقصائية في بطولة رمضانية صغيرة بطابع احترافي.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="/matches" class="primary-button">استعراض المباريات</a>
+      <a href="/groups" class="secondary-button">جداول المجموعات</a>
+    </div>
+  </div>
+  <div class="hero-highlight">
+    <div class="hero-highlight-card">
+      <p class="text-sm text-emerald-100">الحالة الحالية</p>
+      <p class="mt-2 text-3xl font-black text-white">بطولة رمضانية حية</p>
+      <p class="mt-3 text-sm leading-7 text-emerald-50/80">تابع المباريات القادمة، آخر النتائج، والهدافين من واجهة عربية متجاوبة بالكامل.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">الجدول الحالي</p>
+      <h2 class="section-title">المباريات القادمة</h2>
+    </div>
+    <a href="/matches" class="section-link">عرض الكل</a>
+  </div>
+
+  <div class="cards-grid">
+    <% upcomingMatches.forEach((match) => { %>
+      <%- include('../partials/match-card', { match, showStage: true }) %>
+    <% }) %>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="section-heading">
+    <div>
+      <p class="section-kicker">آخر ما حدث</p>
+      <h2 class="section-title">أحدث النتائج</h2>
+    </div>
+    <a href="/scorers" class="section-link">متابعة الهدافين</a>
+  </div>
+
+  <div class="cards-grid">
+    <% latestResults.forEach((match) => { %>
+      <%- include('../partials/match-card', { match, showStage: true }) %>
+    <% }) %>
+  </div>
+</section>
