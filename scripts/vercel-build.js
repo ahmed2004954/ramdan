@@ -21,3 +21,4 @@ function run(command, args) {
 run('npm', ['run', 'build:css']);
 run('npx', ['prisma', 'generate', '--schema', 'prisma/postgres/schema.prisma']);
 run('npx', ['prisma', 'migrate', 'deploy', '--schema', 'prisma/postgres/schema.prisma']);
+run('node', ['scripts/ensure-admin-user.js']);

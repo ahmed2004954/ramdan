@@ -12,6 +12,7 @@
     "db:generate": "npx prisma generate --schema prisma/schema.prisma",
     "db:migrate": "node scripts/ensure-sqlite-db.js && npx prisma migrate dev --schema prisma/schema.prisma",
     "db:seed": "node prisma/seed.js",
+    "db:ensure-admin": "node scripts/ensure-admin-user.js",
     "db:reset": "npx prisma migrate reset --force --schema prisma/schema.prisma",
     "test:setup": "node scripts/test-setup.js",
     "test": "npm run test:setup && node --test tests/app.test.js",
