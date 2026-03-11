@@ -22,6 +22,9 @@ const { formatDateArabic, formatTimeArabic, formatDateTimeArabic } = require('./
 
 const app = express();
 
+// Vercel sits behind a proxy, and secure cookies need the forwarded protocol.
+app.set('trust proxy', 1);
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(process.cwd(), 'views'));
 app.set('layout', 'layouts/main');
